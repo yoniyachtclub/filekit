@@ -4,28 +4,30 @@ import json
 import re
 
 
-#STEP 1, locate all the files with mp3, put into one dictionary
-#STEP 2, add all filepaths with that filename as a value of the dictionary
-#STEP 3, choose the best filepath based on hierarchy of organization and delete the files at the other paths
+#STEP 1, locate all the music files, put into one dictionary - DONE - needs test
+#STEP 2, add all filepaths with that filename as a value of the dictionary - DONE - needs test
+#STEP 3, add all the filepaths as a key to a dictionary, with the value being a set of attributes for the file at that path - TODO
+#STEP 4, choose the best filepath based on hierarchy of organization and delete the files at the other paths - TODO
     #Organization system is based on keeping certain folder schemas and date modified
         #Manual: move crates into iTunes
     #Keep everything that is in the iTunes Library (organized by album and artist)
     #/Macintosh HD/Users/meghnamahadevan/Music/Music/Media
     #move everything to one folder that I want to delete
-#STEP 4, dump the rest of the files into a folder which needs to be organized
-#STEP 5, check if there is anything left behind (not in the big folder)
+#STEP 5, dump the rest of the files into a folder which needs to be organized - TODO
+#STEP 6, check if there is anything left behind (not in the big folder) - TODO
 
 #XML
 #???????
 
 #DEFINE GLOBAL VARIABLES
 numDuplicates = 0 #Total number of duplicates
-totalmp3 = 0
+totalMusicCount = 0
 
 #STEP 1, locate all the files with mp3, put into one dictionary
 def CompileLibrary():
-    global totalmp3
-    mp3musiclibrary = {}
+    global totalMusicCount #maybe change this to totalMusic, because you're checking for all music filetypes and not just mp3
+    musicLibraryByFileName = {} 
+    musicLibraryWithAttributes = {}
     print ("hi")
     for (root, dirs, files) in os.walk('/Users/meghnamahadevan/Documents/', topdown=False):
         print("ROOT" + str(root))
@@ -35,17 +37,20 @@ def CompileLibrary():
         for filename in files:
             if os.path.splitext(filename)[1] in [".mp3", ".mp4", ".m4a", ".wav", ".flac"]:
                 print(filename)
-                totalmp3 = totalmp3 + 1
-            # filename = os.path.split(filepath)[1].lower()# pull out only the file name (whatever.mp3)
-            #   path = os.path.split(filepath)[0].lower() # pull out just the filepath eg if file is macintoshhd/meghnamahadevan/music/whatever.mp3, just macintoshhd/meghnamahadevan/music/
-                if filename in mp3musiclibrary.keys():
+                totalMusicCount = totalMusicCount + 1
+
+                #adding to musicLibraryWithAttributes dictionary - TODO add a separate function to be called here that gets the attributes of a file
+                print('this is where we add to this dictionary with attributes')
+
+                #adding to musicLibraryByFilename dictionary
+                if filename in musicLibraryByFileName.keys():
                     pass
                 else:
-                    mp3musiclibrary[filename] = []
+                    musicLibraryByFileName[filename] = []
                     #STEP 2, add all filepaths with that filename as a value of the dictionary
-                    mp3musiclibrary[filename].append(root) 
-                    print(mp3musiclibrary)
-    return mp3musiclibrary
+                    musicLibraryByFileName[filename].append(root) 
+                    print(root)
+    return musicLibraryByFileName
 
 
 
@@ -93,7 +98,7 @@ def deletedDuplicates(library):
 #                         for filepath in pathways
 #                             if filepath does not contain crates
 #                                 delete
-#                         mp3musiclibrary[filename] = filepath
+#                         musicLibraryByFileName[filename] = filepath
 #                     else pass
 #                 for filepath in pathways #go through and look for itunes playlist
 #                     if filepath #in itunes playlist
@@ -121,7 +126,7 @@ def deletedDuplicates(library):
             
 
 #             filepathstr = pathways[0]
-#             mp3musiclibrary[filename]= filepathstr
+#             musicLibraryByFileName[filename]= filepathstr
             
 
 
@@ -171,7 +176,7 @@ testdictionary = CompileLibrary()
 print("test dictionary")
 print(testdictionary)
 deletedDuplicates(testdictionary)
-print("WE HAVE " + str(numDuplicates) + " DUPLICATES TO DEAL WITH OUT OF " + str(totalmp3) + " FILES")
+print("WE HAVE " + str(numDuplicates) + " DUPLICATES TO DEAL WITH OUT OF " + str(totalMusicCount) + " FILES")
 
 
 #TO DO LIST
