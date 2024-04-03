@@ -5,10 +5,6 @@ import re
 import zipfile
 import csv
 
-#  i love potatoes
-
-
-
 #STEP 1, locate all the files with mp3, put into one dictionary
 #STEP 2, add all filepaths with that filename as a value of the dictionary
 #STEP 3, choose the best filepath based on hierarchy of organization and delete the files at the other paths
@@ -62,7 +58,7 @@ def DeleteDuplicates(library):
         os.makedirs('delete')
 
    #try: 
-    for filename in library: 
+    for filename in library:  #every filename in the library
         listpaths = library[filename] #index for filename
         attributesArray = [] #array with attributes for each version of this file
 
@@ -72,14 +68,7 @@ def DeleteDuplicates(library):
             numDuplicates = numDuplicates + 1
             maxFileSize = 0
             mostRecentlyModified = 0
-            fileIniTunes = False
 
-            #03.27.24 NEXT STEPS LIST!!!!! Start here meghna 
-            #step 1, write the function for file size comparison (create dictionary for filepath ? )
-            #step 2, write the function for date mod comparison (create dictionary for filepath ? )
-            #step 3, integrate those functions into Delete Duplicates
-            #step 4, compare attributes and move the files into the right folders depending on their attributes
-            #step 5, test 
 
 
             #Compare the file size, date modified,  
@@ -150,7 +139,6 @@ def getFileAttributes(filePath) :
     attributes["fileSize"] = os.path.getsize(filePath)
     return attributes 
     #re rekordbox - check https://pypi.org/project/pyrekordbox/
-
                 #ATTRIBUTES
                 # iniTunes = #yes/no - in file path 
                 # recentlymodified = os.stat() #date
@@ -164,10 +152,17 @@ def getFileAttributes(filePath) :
 
 
 # functions for sorting the array of duplicates
-def sortByFileSize(element) : 
-
+def sortByFileSize(filename) : 
     # check if first two+ elements are same file size. if no, continue with move operation
-            maxFileSize = attributesArray[0]["fileSize"]
+    maxFileSize = 0
+    listpaths = musicLibrary[filename]
+    for filepath in listpaths:
+        attributesdict = getFileAttributes(filepath)   
+        if attributesdict["fileSize"] > maxFileSize:
+            attributesdict
+        elif maxFileSize = attributesdict["fileSize"]
+        else:
+            pass
             subAttr = [] #create array with attributes of any same-sized files
             for attr in attributesArray:
                 if attr["fileSize"] == maxFileSize:
@@ -183,6 +178,7 @@ def sortByFileSize(element) :
             shutil.move(src,keepDest)
 
     return element["fileSize"]
+
 
 
 def sortByLastModified(element) : 
@@ -215,18 +211,11 @@ print("WE HAVE " + str(numDuplicates) + " DUPLICATES TO DEAL WITH OUT OF " + str
 
 
 #TO DO LIST
-#test iTunes feature, is this possible
-#double check file priorities
 #test which ones will be deleted
 #move deleted decisions to one folder
 #manually delete
 #build xml situation
-
-
-
-
 #     ORGANIZE THE DUMP FOLDER
-
 #     export all itunes playlists into text files
 #     Name folders based off of playlists
 
